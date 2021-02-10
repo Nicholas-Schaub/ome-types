@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Optional
 
-from ome_types.dataclasses import ome_dataclass
+from ome_types._base_type import OMEType
 
 
 class Compression(Enum):
@@ -12,8 +12,7 @@ class Compression(Enum):
     ZLIB = "zlib"
 
 
-@ome_dataclass
-class BinData:
+class BinData(OMEType):
     """The contents of this element are base64-encoded.
 
     These are not CDATA sections, just a base64 stream.

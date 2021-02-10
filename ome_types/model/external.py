@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Optional
 
-from ome_types.dataclasses import ome_dataclass
+from ome_types._base_type import OMEType
 
 from .simple_types import Hex40
 
@@ -14,8 +14,7 @@ class Compression(Enum):
     ZLIB = "zlib"
 
 
-@ome_dataclass
-class External:
+class External(OMEType):
     """Describes a file location.
 
     Can optionally specify a portion of a file using Offset and a ReadLength.

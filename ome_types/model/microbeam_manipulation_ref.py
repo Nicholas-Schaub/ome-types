@@ -1,11 +1,10 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .reference import Reference
 from .simple_types import MicrobeamManipulationID
 
 
-@ome_dataclass
-class MicrobeamManipulationRef(Reference):
+class MicrobeamManipulationRef(Reference, OMEType):
     """MicrobeamManipulationRef.
 
     Parameters
@@ -13,4 +12,4 @@ class MicrobeamManipulationRef(Reference):
     id : MicrobeamManipulationID
     """
 
-    id: MicrobeamManipulationID = EMPTY  # type: ignore
+    id: MicrobeamManipulationID

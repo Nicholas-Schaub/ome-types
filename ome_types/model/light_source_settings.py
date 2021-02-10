@@ -1,13 +1,12 @@
 from typing import Optional
 
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .settings import Settings
 from .simple_types import LightSourceID, PercentFraction, PositiveFloat, UnitsLength
 
 
-@ome_dataclass
-class LightSourceSettings(Settings):
+class LightSourceSettings(Settings, OMEType):
     """LightSourceSettings.
 
     Parameters
@@ -22,7 +21,7 @@ class LightSourceSettings(Settings):
         The units of the Wavelength of the light source - default:nanometres
     """
 
-    id: LightSourceID = EMPTY  # type: ignore
+    id: LightSourceID
     attenuation: Optional[PercentFraction] = None
     wavelength: Optional[PositiveFloat] = None
     wavelength_unit: Optional[UnitsLength] = UnitsLength("nm")

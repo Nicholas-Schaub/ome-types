@@ -1,11 +1,10 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .reference import Reference
 from .simple_types import ROIID
 
 
-@ome_dataclass
-class ROIRef(Reference):
+class ROIRef(Reference, OMEType):
     """ROIRef.
 
     Parameters
@@ -13,4 +12,4 @@ class ROIRef(Reference):
     id : ROIID
     """
 
-    id: ROIID = EMPTY  # type: ignore
+    id: ROIID

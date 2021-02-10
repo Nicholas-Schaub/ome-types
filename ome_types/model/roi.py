@@ -1,9 +1,8 @@
-from dataclasses import field
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic import validator
+from pydantic import Field, validator
 
-from ome_types.dataclasses import AUTO_SEQUENCE, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .annotation_ref import AnnotationRef
 from .ellipse import Ellipse
@@ -29,8 +28,7 @@ _shape_types: Dict[str, type] = {
 }
 
 
-@ome_dataclass
-class ROI:
+class ROI(OMEType):
     """A four dimensional 'Region of Interest'.
 
     If they are not used, and the Image has more than one plane, the entire set of
@@ -38,20 +36,20 @@ class ROI:
 
     Parameters
     ----------
+    id : ROIID
     annotation_ref : AnnotationRef, optional
     description : str, optional
         A description for the ROI.
-    id : ROIID
     name : str, optional
         The Name identifies the ROI to the user.
     union : List[Shape], optional
     """
 
-    annotation_ref: List[AnnotationRef] = field(default_factory=list)
+    id: ROIID
+    annotation_ref: List[AnnotationRef] = Field(default_factory=list)
     description: Optional[str] = None
-    id: ROIID = AUTO_SEQUENCE  # type: ignore
     name: Optional[str] = None
-    union: List[Shape] = field(default_factory=list)
+    union: List[Shape] = Field(default_factory=list)
 
     @validator("union", pre=True, each_item=True)
     def validate_union(cls, value: Union[Shape, Dict[Any, Any]]) -> Shape:

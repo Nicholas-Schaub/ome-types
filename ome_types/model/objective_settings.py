@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Optional
 
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .settings import Settings
 from .simple_types import ObjectiveID
@@ -15,8 +15,7 @@ class Medium(Enum):
     WATER = "Water"
 
 
-@ome_dataclass
-class ObjectiveSettings(Settings):
+class ObjectiveSettings(Settings, OMEType):
     """This holds the setting applied to an objective as well as a reference to the
     objective.
 
@@ -34,7 +33,7 @@ class ObjectiveSettings(Settings):
         so it also unit-less.
     """
 
-    id: ObjectiveID = EMPTY  # type: ignore
+    id: ObjectiveID
     correction_collar: Optional[float] = None
     medium: Optional[Medium] = None
     refractive_index: Optional[float] = None

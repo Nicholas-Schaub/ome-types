@@ -1,11 +1,10 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .reference import Reference
 from .simple_types import ExperimentID
 
 
-@ome_dataclass
-class ExperimentRef(Reference):
+class ExperimentRef(Reference, OMEType):
     """ExperimentRef.
 
     Parameters
@@ -13,4 +12,4 @@ class ExperimentRef(Reference):
     id : ExperimentID
     """
 
-    id: ExperimentID = EMPTY  # type: ignore
+    id: ExperimentID

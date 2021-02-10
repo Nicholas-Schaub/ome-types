@@ -1,14 +1,14 @@
-from dataclasses import field
 from typing import List, Optional
 
-from ome_types.dataclasses import ome_dataclass
+from pydantic import Field
+
+from ome_types._base_type import OMEType
 
 from .annotation_ref import AnnotationRef
 from .simple_types import Hex40, NonNegativeInt, UnitsLength, UnitsTime
 
 
-@ome_dataclass
-class Plane:
+class Plane(OMEType):
     """The Plane object holds microscope stage and image timing data for a given
     channel/z-section/timepoint.
 
@@ -48,7 +48,7 @@ class Plane:
     the_c: NonNegativeInt
     the_t: NonNegativeInt
     the_z: NonNegativeInt
-    annotation_ref: List[AnnotationRef] = field(default_factory=list)
+    annotation_ref: List[AnnotationRef] = Field(default_factory=list)
     delta_t: Optional[float] = None
     delta_t_unit: Optional[UnitsTime] = UnitsTime("s")
     exposure_time: Optional[float] = None

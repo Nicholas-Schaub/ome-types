@@ -1,11 +1,10 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .reference import Reference
 from .simple_types import ExperimenterID
 
 
-@ome_dataclass
-class ExperimenterRef(Reference):
+class ExperimenterRef(Reference, OMEType):
     """This empty element has a required Experimenter ID and an optional DocumentID
     attribute which refers to one of the Experimenters defined within OME.
 
@@ -14,4 +13,4 @@ class ExperimenterRef(Reference):
     id : ExperimenterID
     """
 
-    id: ExperimenterID = EMPTY  # type: ignore
+    id: ExperimenterID

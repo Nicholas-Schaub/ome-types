@@ -1,22 +1,22 @@
-from dataclasses import field
 from typing import List
 
-from ome_types.dataclasses import AUTO_SEQUENCE, ome_dataclass
+from pydantic import Field
+
+from ome_types._base_type import OMEType
 
 from .annotation_ref import AnnotationRef
 from .manufacturer_spec import ManufacturerSpec
 from .simple_types import DichroicID
 
 
-@ome_dataclass
-class Dichroic(ManufacturerSpec):
+class Dichroic(ManufacturerSpec, OMEType):
     """The dichromatic beamsplitter or dichroic mirror used for this filter
     combination.
 
     Parameters
     ----------
-    annotation_ref : AnnotationRef, optional
     id : DichroicID
+    annotation_ref : AnnotationRef, optional
     lot_number : str, optional
         The lot number of the component.
     manufacturer : str, optional
@@ -27,5 +27,5 @@ class Dichroic(ManufacturerSpec):
         The serial number of the component.
     """
 
-    annotation_ref: List[AnnotationRef] = field(default_factory=list)
-    id: DichroicID = AUTO_SEQUENCE  # type: ignore
+    id: DichroicID
+    annotation_ref: List[AnnotationRef] = Field(default_factory=list)

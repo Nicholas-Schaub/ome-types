@@ -1,10 +1,9 @@
 from typing import Optional
 
-from ome_types.dataclasses import ome_dataclass
+from ome_types._base_type import OMEType
 
 
-@ome_dataclass
-class Rights:
+class Rights(OMEType):
     """The rights holder of this data and the rights held.
 
     Parameters

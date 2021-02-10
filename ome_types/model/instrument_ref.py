@@ -1,11 +1,10 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .reference import Reference
 from .simple_types import InstrumentID
 
 
-@ome_dataclass
-class InstrumentRef(Reference):
+class InstrumentRef(Reference, OMEType):
     """This empty element can be used (via the required Instrument ID attribute) to
     refer to an Instrument defined within OME.
 
@@ -14,4 +13,4 @@ class InstrumentRef(Reference):
     id : InstrumentID
     """
 
-    id: InstrumentID = EMPTY  # type: ignore
+    id: InstrumentID

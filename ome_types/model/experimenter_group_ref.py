@@ -1,11 +1,10 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .reference import Reference
 from .simple_types import ExperimenterGroupID
 
 
-@ome_dataclass
-class ExperimenterGroupRef(Reference):
+class ExperimenterGroupRef(Reference, OMEType):
     """This empty element has a reference (the ExperimenterGroup ID attribute) to a
     ExperimenterGroup defined within OME.
 
@@ -14,4 +13,4 @@ class ExperimenterGroupRef(Reference):
     id : ExperimenterGroupID
     """
 
-    id: ExperimenterGroupID = EMPTY  # type: ignore
+    id: ExperimenterGroupID

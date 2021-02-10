@@ -1,8 +1,9 @@
-from dataclasses import field
 from enum import Enum
 from typing import List, Optional
 
-from ome_types.dataclasses import AUTO_SEQUENCE, ome_dataclass
+from pydantic import Field
+
+from ome_types._base_type import OMEType
 
 from .annotation_ref import AnnotationRef
 from .manufacturer_spec import ManufacturerSpec
@@ -41,8 +42,7 @@ class Immersion(Enum):
     WATER_DIPPING = "WaterDipping"
 
 
-@ome_dataclass
-class Objective(ManufacturerSpec):
+class Objective(ManufacturerSpec, OMEType):
     """A description of the microscope's objective lens.
 
     Required elements include the lens numerical aperture, and the magnification,
@@ -59,13 +59,13 @@ class Objective(ManufacturerSpec):
 
     Parameters
     ----------
+    id : ObjectiveID
     annotation_ref : AnnotationRef, optional
     calibrated_magnification : float, optional
         The magnification of the lens as measured by a calibration process-
         i.e. '59.987' for a 60X lens.
     correction : Correction, optional
         The correction applied to the lens
-    id : ObjectiveID
     immersion : Immersion, optional
         The immersion medium the lens is designed for
     iris : bool, optional
@@ -93,10 +93,10 @@ class Objective(ManufacturerSpec):
         The units of the working distance - default:microns.
     """
 
-    annotation_ref: List[AnnotationRef] = field(default_factory=list)
+    id: ObjectiveID
+    annotation_ref: List[AnnotationRef] = Field(default_factory=list)
     calibrated_magnification: Optional[float] = None
     correction: Optional[Correction] = None
-    id: ObjectiveID = AUTO_SEQUENCE  # type: ignore
     immersion: Optional[Immersion] = None
     iris: Optional[bool] = None
     lens_na: Optional[float] = None

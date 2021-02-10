@@ -1,8 +1,7 @@
-from ome_types.dataclasses import ome_dataclass
+from ome_types._base_type import OMEType
 
 
-@ome_dataclass
-class AffineTransform:
+class AffineTransform(OMEType):
     """A matrix used to transform the shape.
 
     ⎡ A00, A01, A02 ⎤ ⎢ A10, A11, A12 ⎥ ⎣ 0,   0,   1   ⎦

@@ -1,11 +1,10 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .reference import Reference
 from .simple_types import DichroicID
 
 
-@ome_dataclass
-class DichroicRef(Reference):
+class DichroicRef(Reference, OMEType):
     """DichroicRef.
 
     Parameters
@@ -13,4 +12,4 @@ class DichroicRef(Reference):
     id : DichroicID
     """
 
-    id: DichroicID = EMPTY  # type: ignore
+    id: DichroicID

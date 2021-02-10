@@ -1,11 +1,10 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .reference import Reference
 from .simple_types import AnnotationID
 
 
-@ome_dataclass
-class AnnotationRef(Reference):
+class AnnotationRef(Reference, OMEType):
     """The AnnotationRef element is a reference to an element derived from the
     CommonAnnotation element.
 
@@ -14,4 +13,4 @@ class AnnotationRef(Reference):
     id : AnnotationID
     """
 
-    id: AnnotationID = EMPTY  # type: ignore
+    id: AnnotationID

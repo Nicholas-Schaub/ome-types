@@ -1,16 +1,16 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .shape import Shape
 
 
-@ome_dataclass
-class Ellipse(Shape):
+class Ellipse(Shape, OMEType):
     """A simple ellipse object.
 
     If rotation is required apply a transformation at the Shape level.
 
     Parameters
     ----------
+    id : ShapeID
     radius_x : float
         The horizontal radius of the ellipse.
     radius_y : float
@@ -32,7 +32,6 @@ class Ellipse(Shape):
     font_size_unit : UnitsLength, optional
         The units used for the font size.
     font_style : FontStyle, optional
-    id : ShapeID
     locked : bool, optional
         Controls whether the shape is locked and read only, true is locked,
         false is editable.
@@ -63,7 +62,7 @@ class Ellipse(Shape):
         be included.
     """
 
-    radius_x: float = EMPTY  # type: ignore
-    radius_y: float = EMPTY  # type: ignore
-    x: float = EMPTY  # type: ignore
-    y: float = EMPTY  # type: ignore
+    radius_x: float
+    radius_y: float
+    x: float
+    y: float

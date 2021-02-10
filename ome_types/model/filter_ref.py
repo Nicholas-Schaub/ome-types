@@ -1,11 +1,10 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .reference import Reference
 from .simple_types import FilterID
 
 
-@ome_dataclass
-class FilterRef(Reference):
+class FilterRef(Reference, OMEType):
     """FilterRef.
 
     Parameters
@@ -13,4 +12,4 @@ class FilterRef(Reference):
     id : FilterID
     """
 
-    id: FilterID = EMPTY  # type: ignore
+    id: FilterID

@@ -1,16 +1,16 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .shape import Shape
 
 
-@ome_dataclass
-class Label(Shape):
+class Label(Shape, OMEType):
     """The text label.
 
     Any transformation should be applied at the shape level.
 
     Parameters
     ----------
+    id : ShapeID
     x : float
         This defines the X coordinate of the current text position
         of the first character in the string.
@@ -30,7 +30,6 @@ class Label(Shape):
     font_size_unit : UnitsLength, optional
         The units used for the font size.
     font_style : FontStyle, optional
-    id : ShapeID
     locked : bool, optional
         Controls whether the shape is locked and read only, true is locked,
         false is editable.
@@ -61,5 +60,5 @@ class Label(Shape):
         be included.
     """
 
-    x: float = EMPTY  # type: ignore
-    y: float = EMPTY  # type: ignore
+    x: float
+    y: float

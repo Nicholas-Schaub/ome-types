@@ -1,10 +1,9 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .shape import Shape
 
 
-@ome_dataclass
-class Polygon(Shape):
+class Polygon(Shape, OMEType):
     """The Polygon defines closed shapes formed of straight lines.
 
     Note: Polygon uses counterclockwise winding (this is the default OpenGL
@@ -12,6 +11,7 @@ class Polygon(Shape):
 
     Parameters
     ----------
+    id : ShapeID
     points : str
         The points of the Polygon are defined as a list of comma separated x,y
         coordinates seperated by spaces like "x1,y1 x2,y2 x3,y3" e.g. "0,0 1,2
@@ -29,7 +29,6 @@ class Polygon(Shape):
     font_size_unit : UnitsLength, optional
         The units used for the font size.
     font_style : FontStyle, optional
-    id : ShapeID
     locked : bool, optional
         Controls whether the shape is locked and read only, true is locked,
         false is editable.
@@ -60,4 +59,4 @@ class Polygon(Shape):
         be included.
     """
 
-    points: str = EMPTY  # type: ignore
+    points: str

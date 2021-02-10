@@ -1,8 +1,9 @@
-from dataclasses import field
 from enum import Enum
 from typing import List, Optional
 
-from ome_types.dataclasses import AUTO_SEQUENCE, ome_dataclass
+from pydantic import Field
+
+from ome_types._base_type import OMEType
 
 from .affine_transform import AffineTransform
 from .annotation_ref import AnnotationRef
@@ -29,8 +30,7 @@ class FontStyle(Enum):
     NORMAL = "Normal"
 
 
-@ome_dataclass
-class Shape:
+class Shape(OMEType):
     """The shape element contains a single specific ROI shape and links that to any
     channels, and a timepoint and a z-section.
 
@@ -38,6 +38,7 @@ class Shape:
 
     Parameters
     ----------
+    id : ShapeID
     annotation_ref : AnnotationRef, optional
     fill_color : Color, optional
         The color of the fill - encoded as RGBA The value "-1" is #FFFFFFFF so
@@ -51,7 +52,6 @@ class Shape:
     font_size_unit : UnitsLength, optional
         The units used for the font size.
     font_style : FontStyle, optional
-    id : ShapeID
     locked : bool, optional
         Controls whether the shape is locked and read only, true is locked,
         false is editable.
@@ -82,14 +82,14 @@ class Shape:
         be included.
     """
 
-    annotation_ref: List[AnnotationRef] = field(default_factory=list)
+    id: ShapeID
+    annotation_ref: List[AnnotationRef] = Field(default_factory=list)
     fill_color: Optional[Color] = None
     fill_rule: Optional[FillRule] = None
     font_family: Optional[FontFamily] = None
     font_size: Optional[NonNegativeInt] = None
     font_size_unit: Optional[UnitsLength] = UnitsLength("pt")
     font_style: Optional[FontStyle] = None
-    id: ShapeID = AUTO_SEQUENCE  # type: ignore
     locked: Optional[bool] = None
     stroke_color: Optional[Color] = None
     stroke_dash_array: Optional[str] = None

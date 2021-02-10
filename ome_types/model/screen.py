@@ -1,7 +1,8 @@
-from dataclasses import field
 from typing import List, Optional
 
-from ome_types.dataclasses import AUTO_SEQUENCE, EMPTY, ome_dataclass
+from pydantic import Field
+
+from ome_types._base_type import OMEType
 
 from .annotation_ref import AnnotationRef
 from .reagent import Reagent
@@ -9,8 +10,7 @@ from .reference import Reference
 from .simple_types import PlateID, ScreenID
 
 
-@ome_dataclass
-class PlateRef(Reference):
+class PlateRef(Reference, OMEType):
     """The PlateRef element is a reference to a Plate element.
 
     Screen elements may have one or more PlateRef elements to define the plates
@@ -21,11 +21,10 @@ class PlateRef(Reference):
     id : PlateID
     """
 
-    id: PlateID = EMPTY  # type: ignore
+    id: PlateID
 
 
-@ome_dataclass
-class Screen:
+class Screen(OMEType):
     """The Screen element is a grouping for Plates.
 
     The required attribute is the Screen's Name and ID - both must be unique
@@ -37,10 +36,10 @@ class Screen:
 
     Parameters
     ----------
+    id : ScreenID
     annotation_ref : AnnotationRef, optional
     description : str, optional
         A description for the screen.
-    id : ScreenID
     name : str, optional
     plate_ref : PlateRef, optional
         The PlateRef element is a reference to a Plate element. Screen
@@ -67,14 +66,14 @@ class Screen:
         releases.
     """
 
-    annotation_ref: List[AnnotationRef] = field(default_factory=list)
+    id: ScreenID
+    annotation_ref: List[AnnotationRef] = Field(default_factory=list)
     description: Optional[str] = None
-    id: ScreenID = AUTO_SEQUENCE  # type: ignore
     name: Optional[str] = None
-    plate_ref: List[PlateRef] = field(default_factory=list)
+    plate_ref: List[PlateRef] = Field(default_factory=list)
     protocol_description: Optional[str] = None
     protocol_identifier: Optional[str] = None
     reagent_set_description: Optional[str] = None
     reagent_set_identifier: Optional[str] = None
-    reagents: List[Reagent] = field(default_factory=list)
+    reagents: List[Reagent] = Field(default_factory=list)
     type: Optional[str] = None

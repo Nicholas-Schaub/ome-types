@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Optional
 
-from ome_types.dataclasses import ome_dataclass
+from ome_types._base_type import OMEType
 
 from .light_source import LightSource
 from .pump import Pump
@@ -73,19 +73,18 @@ class Pulse(Enum):
     SINGLE = "Single"
 
 
-@ome_dataclass
-class Laser(LightSource):
+class Laser(LightSource, OMEType):
     """Laser types are specified using two attributes - the Type and the LaserMedium.
 
     Parameters
     ----------
-    annotation_ref : AnnotationRef, optional
-    frequency_multiplication : PositiveInt, optional
-        FrequencyMultiplication that may be specified.
     id : LightSourceID
         A LightSource ID must be specified for each light source, and the
         individual light sources can be referred to by their LightSource IDs
         (eg from Channel).
+    annotation_ref : AnnotationRef, optional
+    frequency_multiplication : PositiveInt, optional
+        FrequencyMultiplication that may be specified.
     laser_medium : LaserMedium, optional
         The Medium attribute specifies the actual lasing medium for a given
         laser type.

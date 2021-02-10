@@ -1,8 +1,9 @@
-from dataclasses import field
 from enum import Enum
 from typing import List, Optional
 
-from ome_types.dataclasses import AUTO_SEQUENCE, ome_dataclass
+from pydantic import Field
+
+from ome_types._base_type import OMEType
 
 from .bin_data import BinData
 from .channel import Channel
@@ -29,8 +30,7 @@ class DimensionOrder(Enum):
     XYZTC = "XYZTC"
 
 
-@ome_dataclass
-class Pixels:
+class Pixels(OMEType):
     """Pixels is going to be removed in the future, but it is still required.
 
     This is just notice that the contents of Pixels will be moved up to Image in a
@@ -60,6 +60,7 @@ class Pixels:
     ----------
     dimension_order : DimensionOrder
         The order in which the individual planes of data are interleaved.
+    id : PixelsID
     size_c : PositiveInt
         Dimensional size of pixel data array
     size_t : PositiveInt
@@ -80,7 +81,6 @@ class Pixels:
         is to allow for future storage solutions.
     bin_data : BinData, optional
     channels : Channel, optional
-    id : PixelsID
     interleaved : bool, optional
         How the channels are arranged within the data block: true if channels
         are stored RGBRGBRGB...; false if channels are stored
@@ -114,6 +114,7 @@ class Pixels:
     """
 
     dimension_order: DimensionOrder
+    id: PixelsID
     size_c: PositiveInt
     size_t: PositiveInt
     size_x: PositiveInt
@@ -121,9 +122,8 @@ class Pixels:
     size_z: PositiveInt
     type: PixelType
     big_endian: Optional[bool] = None
-    bin_data: List[BinData] = field(default_factory=list)
-    channels: List[Channel] = field(default_factory=list)
-    id: PixelsID = AUTO_SEQUENCE  # type: ignore
+    bin_data: List[BinData] = Field(default_factory=list)
+    channels: List[Channel] = Field(default_factory=list)
     interleaved: Optional[bool] = None
     metadata_only: bool = False
     physical_size_x: Optional[PositiveFloat] = None
@@ -132,8 +132,8 @@ class Pixels:
     physical_size_y_unit: Optional[UnitsLength] = UnitsLength("µm")
     physical_size_z: Optional[PositiveFloat] = None
     physical_size_z_unit: Optional[UnitsLength] = UnitsLength("µm")
-    planes: List[Plane] = field(default_factory=list)
+    planes: List[Plane] = Field(default_factory=list)
     significant_bits: Optional[PositiveInt] = None
-    tiff_data_blocks: List[TiffData] = field(default_factory=list)
+    tiff_data_blocks: List[TiffData] = Field(default_factory=list)
     time_increment: Optional[float] = None
     time_increment_unit: Optional[UnitsTime] = UnitsTime("s")

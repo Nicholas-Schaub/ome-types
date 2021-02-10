@@ -1,18 +1,16 @@
 from typing import Optional, cast
 
-from ome_types.dataclasses import ome_dataclass
+from ome_types._base_type import OMEType
 
 from .simple_types import NonNegativeInt, UniversallyUniqueIdentifier
 
 
-@ome_dataclass
-class UUID:
+class UUID(OMEType):
     file_name: str
     value: UniversallyUniqueIdentifier
 
 
-@ome_dataclass
-class TiffData:
+class TiffData(OMEType):
     """This described the location of the pixel data in a tiff file.
 
     Parameters

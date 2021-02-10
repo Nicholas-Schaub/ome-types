@@ -1,6 +1,6 @@
 from typing import Optional
 
-from ome_types.dataclasses import ome_dataclass
+from ome_types._base_type import OMEType
 
 from .boolean_annotation import BooleanAnnotation
 from .comment_annotation import CommentAnnotation
@@ -15,8 +15,7 @@ from .timestamp_annotation import TimestampAnnotation
 from .xml_annotation import XMLAnnotation
 
 
-@ome_dataclass
-class StructuredAnnotations:
+class StructuredAnnotations(OMEType):
     """An unordered collection of annotation attached to objects in the OME data
     model.
 

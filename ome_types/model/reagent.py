@@ -1,23 +1,23 @@
-from dataclasses import field
 from typing import List, Optional
 
-from ome_types.dataclasses import AUTO_SEQUENCE, ome_dataclass
+from pydantic import Field
+
+from ome_types._base_type import OMEType
 
 from .annotation_ref import AnnotationRef
 from .simple_types import ReagentID
 
 
-@ome_dataclass
-class Reagent:
+class Reagent(OMEType):
     """Reagent is used to describe a chemical or some other physical experimental
     parameter.
 
     Parameters
     ----------
+    id : ReagentID
     annotation_ref : AnnotationRef, optional
     description : str, optional
         A long description for the reagent.
-    id : ReagentID
     name : str, optional
         A short name for the reagent
     reagent_identifier : str, optional
@@ -26,8 +26,8 @@ class Reagent:
         sometimes referred to as ExternalIdentifier.
     """
 
-    annotation_ref: List[AnnotationRef] = field(default_factory=list)
+    id: ReagentID
+    annotation_ref: List[AnnotationRef] = Field(default_factory=list)
     description: Optional[str] = None
-    id: ReagentID = AUTO_SEQUENCE  # type: ignore
     name: Optional[str] = None
     reagent_identifier: Optional[str] = None

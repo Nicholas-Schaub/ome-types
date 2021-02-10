@@ -1,18 +1,19 @@
-from dataclasses import field
 from typing import List, Optional
 
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from pydantic import Field
+
+from ome_types._base_type import OMEType
 
 from .annotation_ref import AnnotationRef
 from .numeric_annotation import NumericAnnotation
 
 
-@ome_dataclass
-class LongAnnotation(NumericAnnotation):
+class LongAnnotation(NumericAnnotation, OMEType):
     """A simple numerical annotation of type xsd:long
 
     Parameters
     ----------
+    id : AnnotationID
     value : int
     annotation_ref : AnnotationRef, optional
     annotator : ExperimenterID, optional
@@ -21,13 +22,12 @@ class LongAnnotation(NumericAnnotation):
         the Annotator.
     description : str, optional
         A description for the annotation.
-    id : AnnotationID
     namespace : str, optional
         We recommend the inclusion of a namespace for annotations you define.
         If it is absent then we assume the annotation is to use our (OME's)
         default interpretation for this type.
     """
 
-    value: int = EMPTY  # type: ignore
-    annotation_ref: List[AnnotationRef] = field(default_factory=list)
+    value: int
+    annotation_ref: List[AnnotationRef] = Field(default_factory=list)
     description: Optional[str] = None

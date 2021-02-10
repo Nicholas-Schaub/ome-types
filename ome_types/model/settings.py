@@ -1,10 +1,9 @@
-from ome_types.dataclasses import ome_dataclass
+from ome_types._base_type import OMEType
 
 from .reference import Reference
 
 
-@ome_dataclass
-class Settings(Reference):
+class Settings(Reference, OMEType):
     """Settings is an empty complex type that is contained and extended by all the
     *Settings elements Each *Settings element defines an attribute named ID of
     simple type *ID and the other information that is needed.

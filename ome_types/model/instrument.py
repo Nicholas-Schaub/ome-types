@@ -1,9 +1,8 @@
-from dataclasses import field
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic import validator
+from pydantic import Field, validator
 
-from ome_types.dataclasses import AUTO_SEQUENCE, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .annotation_ref import AnnotationRef
 from .arc import Arc
@@ -29,8 +28,7 @@ _light_source_types: Dict[str, type] = {
 }
 
 
-@ome_dataclass
-class Instrument:
+class Instrument(OMEType):
     """This element describes the instrument used to capture the Image.
 
     It is primarily a container for manufacturer's model and catalog numbers for
@@ -47,26 +45,26 @@ class Instrument:
 
     Parameters
     ----------
+    id : InstrumentID
     annotation_ref : AnnotationRef, optional
     detectors : Detector, optional
     dichroics : Dichroic, optional
     filter_sets : FilterSet, optional
     filters : Filter, optional
-    id : InstrumentID
     light_source_group : List[LightSource], optional
     microscope : Microscope, optional
     objectives : Objective, optional
     """
 
-    annotation_ref: List[AnnotationRef] = field(default_factory=list)
-    detectors: List[Detector] = field(default_factory=list)
-    dichroics: List[Dichroic] = field(default_factory=list)
-    filter_sets: List[FilterSet] = field(default_factory=list)
-    filters: List[Filter] = field(default_factory=list)
-    id: InstrumentID = AUTO_SEQUENCE  # type: ignore
-    light_source_group: List[LightSource] = field(default_factory=list)
+    id: InstrumentID
+    annotation_ref: List[AnnotationRef] = Field(default_factory=list)
+    detectors: List[Detector] = Field(default_factory=list)
+    dichroics: List[Dichroic] = Field(default_factory=list)
+    filter_sets: List[FilterSet] = Field(default_factory=list)
+    filters: List[Filter] = Field(default_factory=list)
+    light_source_group: List[LightSource] = Field(default_factory=list)
     microscope: Optional[Microscope] = None
-    objectives: List[Objective] = field(default_factory=list)
+    objectives: List[Objective] = Field(default_factory=list)
 
     @validator("light_source_group", pre=True, each_item=True)
     def validate_light_source_group(

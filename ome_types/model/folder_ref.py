@@ -1,11 +1,10 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .reference import Reference
 from .simple_types import FolderID
 
 
-@ome_dataclass
-class FolderRef(Reference):
+class FolderRef(Reference, OMEType):
     """The FolderRef element refers to a Folder by specifying the Folder ID
     attribute.
 
@@ -17,4 +16,4 @@ class FolderRef(Reference):
     id : FolderID
     """
 
-    id: FolderID = EMPTY  # type: ignore
+    id: FolderID

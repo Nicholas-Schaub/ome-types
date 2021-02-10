@@ -1,13 +1,12 @@
 from typing import Optional
 
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .shape import Shape
 from .simple_types import Marker
 
 
-@ome_dataclass
-class Polyline(Shape):
+class Polyline(Shape, OMEType):
     """The Polyline defines open shapes formed of straight lines.
 
     Note: Polyline uses counterclockwise winding (this is the default OpenGL
@@ -15,6 +14,7 @@ class Polyline(Shape):
 
     Parameters
     ----------
+    id : ShapeID
     points : str
         The points of the polyline are defined as a list of comma separated
         x,y coordinates seperated by spaces like "x1,y1 x2,y2 x3,y3" e.g. "0,0
@@ -32,7 +32,6 @@ class Polyline(Shape):
     font_size_unit : UnitsLength, optional
         The units used for the font size.
     font_style : FontStyle, optional
-    id : ShapeID
     locked : bool, optional
         Controls whether the shape is locked and read only, true is locked,
         false is editable.
@@ -65,6 +64,6 @@ class Polyline(Shape):
         be included.
     """
 
-    points: str = EMPTY  # type: ignore
+    points: str
     marker_end: Optional[Marker] = None
     marker_start: Optional[Marker] = None

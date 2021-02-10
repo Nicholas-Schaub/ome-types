@@ -1,11 +1,11 @@
 import weakref
-from dataclasses import field
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic import validator
+from pydantic import Field, validator
 
 from ome_types import util
-from ome_types.dataclasses import ome_dataclass
+from ome_types._base_type import OMEType
 
 from .annotation import Annotation
 from .boolean_annotation import BooleanAnnotation
@@ -48,8 +48,7 @@ _annotation_types: Dict[str, type] = {
 }
 
 
-@ome_dataclass
-class BinaryOnly:
+class BinaryOnly(OMEType):
     """Pointer to an external metadata file.
 
     If this              element is present, then no other metadata may be present
@@ -72,8 +71,7 @@ class BinaryOnly:
     uuid: UniversallyUniqueIdentifier
 
 
-@ome_dataclass
-class OME:
+class OME(OMEType):
     """The OME element is a container for all information objects accessible by OME.
 
     These information objects include descriptions of the imaging experiments and
@@ -120,33 +118,51 @@ class OME:
 
     binary_only: Optional[BinaryOnly] = None
     creator: Optional[str] = None
-    datasets: List[Dataset] = field(default_factory=list)
-    experimenter_groups: List[ExperimenterGroup] = field(default_factory=list)
-    experimenters: List[Experimenter] = field(default_factory=list)
-    experiments: List[Experiment] = field(default_factory=list)
-    folders: List[Folder] = field(default_factory=list)
-    images: List[Image] = field(default_factory=list)
-    instruments: List[Instrument] = field(default_factory=list)
-    plates: List[Plate] = field(default_factory=list)
-    projects: List[Project] = field(default_factory=list)
+    datasets: List[Dataset] = Field(default_factory=list)
+    experimenter_groups: List[ExperimenterGroup] = Field(default_factory=list)
+    experimenters: List[Experimenter] = Field(default_factory=list)
+    experiments: List[Experiment] = Field(default_factory=list)
+    folders: List[Folder] = Field(default_factory=list)
+    images: List[Image] = Field(default_factory=list)
+    instruments: List[Instrument] = Field(default_factory=list)
+    plates: List[Plate] = Field(default_factory=list)
+    projects: List[Project] = Field(default_factory=list)
     rights: Optional[Rights] = None
-    rois: List[ROI] = field(default_factory=list)
-    screens: List[Screen] = field(default_factory=list)
-    structured_annotations: List[Annotation] = field(default_factory=list)
+    rois: List[ROI] = Field(default_factory=list)
+    screens: List[Screen] = Field(default_factory=list)
+    structured_annotations: List[Annotation] = Field(default_factory=list)
     uuid: Optional[UniversallyUniqueIdentifier] = None
 
-    def __post_init_post_parse__(self: Any, *args: Any) -> None:
+    def __init__(self, **data: Any) -> None:
+        super().__init__(**data)
         self._link_refs()
 
-    def _link_refs(self):
+    def _link_refs(self) -> None:
         ids = util.collect_ids(self)
         for ref in util.collect_references(self):
-            ref.ref_ = weakref.ref(ids[ref.id])
+            ref._ref = weakref.ref(ids[ref.id])
 
     def __setstate__(self: Any, state: Dict[str, Any]) -> None:
         """Support unpickle of our weakref references."""
-        self.__dict__.update(state)
+        super().__setstate__(state)
         self._link_refs()
+
+    @classmethod
+    def from_xml(cls, xml: Union[Path, str]) -> "OME":
+        from ome_types._convenience import from_xml
+
+        return from_xml(xml)
+
+    @classmethod
+    def from_tiff(cls, path: Union[Path, str]) -> "OME":
+        from ome_types._convenience import from_tiff
+
+        return from_tiff(path)
+
+    def to_xml(self) -> str:
+        from ome_types.schema import to_xml
+
+        return to_xml(self)
 
     @validator("structured_annotations", pre=True, each_item=True)
     def validate_structured_annotations(

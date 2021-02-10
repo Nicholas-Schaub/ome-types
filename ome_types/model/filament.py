@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Optional
 
-from ome_types.dataclasses import ome_dataclass
+from ome_types._base_type import OMEType
 
 from .light_source import LightSource
 
@@ -14,8 +14,7 @@ class Type(Enum):
     OTHER = "Other"
 
 
-@ome_dataclass
-class Filament(LightSource):
+class Filament(LightSource, OMEType):
     """The Filament element is used to describe various kinds of filament bulbs such
     as Incadescent or Halogen.
 
@@ -23,11 +22,11 @@ class Filament(LightSource):
 
     Parameters
     ----------
-    annotation_ref : AnnotationRef, optional
     id : LightSourceID
         A LightSource ID must be specified for each light source, and the
         individual light sources can be referred to by their LightSource IDs
         (eg from Channel).
+    annotation_ref : AnnotationRef, optional
     lot_number : str, optional
         The lot number of the component.
     manufacturer : str, optional

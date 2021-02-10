@@ -1,6 +1,6 @@
 from typing import Optional
 
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .settings import Settings
 from .simple_types import (
@@ -12,8 +12,7 @@ from .simple_types import (
 )
 
 
-@ome_dataclass
-class DetectorSettings(Settings):
+class DetectorSettings(Settings, OMEType):
     """This holds the setting applied to a detector as well as a reference to the
     detector.
 
@@ -52,7 +51,7 @@ class DetectorSettings(Settings):
         The Zoom or "Confocal Zoom" or "Scan Zoom" for a detector. {used:PMT}
     """
 
-    id: DetectorID = EMPTY  # type: ignore
+    id: DetectorID
     binning: Optional[Binning] = None
     gain: Optional[float] = None
     integration: Optional[PositiveInt] = None

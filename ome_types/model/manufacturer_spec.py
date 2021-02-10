@@ -1,10 +1,9 @@
 from typing import Optional
 
-from ome_types.dataclasses import ome_dataclass
+from ome_types._base_type import OMEType
 
 
-@ome_dataclass
-class ManufacturerSpec:
+class ManufacturerSpec(OMEType):
     """This is the base from which many microscope components are extended.
 
     E.g Objective, Filter etc. Provides attributes for recording common properties

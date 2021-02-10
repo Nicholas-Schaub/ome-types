@@ -1,12 +1,11 @@
 from typing import Optional
 
-from ome_types.dataclasses import ome_dataclass
+from ome_types._base_type import OMEType
 
 from .simple_types import NonNegativeFloat, PercentFraction, PositiveFloat, UnitsLength
 
 
-@ome_dataclass
-class TransmittanceRange:
+class TransmittanceRange(OMEType):
     """This records the range of wavelengths that are transmitted by the filter.
 
     It also records the maximum amount of light transmitted.

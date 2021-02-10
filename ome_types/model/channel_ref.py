@@ -1,11 +1,10 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .reference import Reference
 from .simple_types import ChannelID
 
 
-@ome_dataclass
-class ChannelRef(Reference):
+class ChannelRef(Reference, OMEType):
     """ChannelRef.
 
     Parameters
@@ -13,4 +12,4 @@ class ChannelRef(Reference):
     id : ChannelID
     """
 
-    id: ChannelID = EMPTY  # type: ignore
+    id: ChannelID

@@ -1,11 +1,10 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .reference import Reference
 from .simple_types import DatasetID
 
 
-@ome_dataclass
-class DatasetRef(Reference):
+class DatasetRef(Reference, OMEType):
     """The DatasetRef element refers to a Dataset by specifying the Dataset ID
     attribute.
 
@@ -17,4 +16,4 @@ class DatasetRef(Reference):
     id : DatasetID
     """
 
-    id: DatasetID = EMPTY  # type: ignore
+    id: DatasetID

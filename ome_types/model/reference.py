@@ -1,24 +1,26 @@
-from dataclasses import field
-from typing import Any
+from typing import TYPE_CHECKING, Any, Optional
+from weakref import ReferenceType
 
-from ome_types.dataclasses import ome_dataclass
+from ome_types._base_type import OMEType
 
 from .simple_types import LSID
 
 
-@ome_dataclass
-class Reference:
+class Reference(OMEType):
     """Reference is an empty complex type that is contained and extended by all the
     *Ref elements and also the Settings Complex Type Each *Ref element defines an
     attribute named ID of simple type *ID and no other information Each simple
     type *ID is restricted to the base type LSID with an appropriate pattern
     """
 
+    if TYPE_CHECKING:
+        _ref: Optional["ReferenceType[OMEType]"]
+
     id: LSID
-    ref_: Any = field(default=None, init=False)
+    _ref = None
 
     @property
     def ref(self) -> Any:
-        if self.ref_ is None:
+        if self._ref is None:
             raise ValueError("references not yet resolved on root OME object")
-        return self.ref_()
+        return self._ref()

@@ -1,25 +1,24 @@
 from datetime import datetime
 from typing import Optional
 
-from ome_types.dataclasses import AUTO_SEQUENCE, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .image_ref import ImageRef
 from .simple_types import NonNegativeInt, UnitsLength, WellSampleID
 
 
-@ome_dataclass
-class WellSample:
+class WellSample(OMEType):
     """WellSample is an individual image that has been captured within a Well.
 
     Parameters
     ----------
+    id : WellSampleID
     index : NonNegativeInt
         This records the order of the well samples. Each index should be
         unique for a given plate but they do not have to be sequential, there
         may be gaps if part of the dataset is missing. In the user interface
         the displayed value of the index will be calculated modulo the number
         of PlateAcquisitions for the plate.
-    id : WellSampleID
     image_ref : ImageRef, optional
         This is the main link to the core Image element
     position_x : float, optional
@@ -36,8 +35,8 @@ class WellSample:
         The time-point at which the image started to be collected
     """
 
+    id: WellSampleID
     index: NonNegativeInt
-    id: WellSampleID = AUTO_SEQUENCE  # type: ignore
     image_ref: Optional[ImageRef] = None
     position_x: Optional[float] = None
     position_x_unit: Optional[UnitsLength] = UnitsLength("reference frame")

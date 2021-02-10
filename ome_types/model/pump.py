@@ -1,11 +1,10 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .reference import Reference
 from .simple_types import LightSourceID
 
 
-@ome_dataclass
-class Pump(Reference):
+class Pump(Reference, OMEType):
     """The Pump element is a reference to a LightSource.
 
     It is used within the Laser element to specify the light source for the
@@ -16,4 +15,4 @@ class Pump(Reference):
     id : LightSourceID
     """
 
-    id: LightSourceID = EMPTY  # type: ignore
+    id: LightSourceID

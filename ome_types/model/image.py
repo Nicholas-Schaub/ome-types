@@ -1,8 +1,9 @@
-from dataclasses import field
 from datetime import datetime
 from typing import List, Optional
 
-from ome_types.dataclasses import AUTO_SEQUENCE, ome_dataclass
+from pydantic import Field
+
+from ome_types._base_type import OMEType
 
 from .annotation_ref import AnnotationRef
 from .experiment_ref import ExperimentRef
@@ -18,8 +19,7 @@ from .simple_types import ImageID
 from .stage_label import StageLabel
 
 
-@ome_dataclass
-class Image:
+class Image(OMEType):
     """This element describes the actual image and its meta-data.
 
     The elements that are references (ending in Ref or Settings) refer to elements
@@ -38,6 +38,7 @@ class Image:
 
     Parameters
     ----------
+    id : ImageID
     pixels : Pixels
     acquisition_date : datetime, optional
         The acquisition date of the Image. The element contains an
@@ -65,7 +66,6 @@ class Image:
     experiment_ref : ExperimentRef, optional
     experimenter_group_ref : ExperimenterGroupRef, optional
     experimenter_ref : ExperimenterRef, optional
-    id : ImageID
     imaging_environment : ImagingEnvironment, optional
     instrument_ref : InstrumentRef, optional
     microbeam_manipulation_ref : MicrobeamManipulationRef, optional
@@ -75,20 +75,20 @@ class Image:
     stage_label : StageLabel, optional
     """
 
+    id: ImageID
     pixels: Pixels
     acquisition_date: Optional[datetime] = None
-    annotation_ref: List[AnnotationRef] = field(default_factory=list)
+    annotation_ref: List[AnnotationRef] = Field(default_factory=list)
     description: Optional[str] = None
     experiment_ref: Optional[ExperimentRef] = None
     experimenter_group_ref: Optional[ExperimenterGroupRef] = None
     experimenter_ref: Optional[ExperimenterRef] = None
-    id: ImageID = AUTO_SEQUENCE  # type: ignore
     imaging_environment: Optional[ImagingEnvironment] = None
     instrument_ref: Optional[InstrumentRef] = None
-    microbeam_manipulation_ref: List[MicrobeamManipulationRef] = field(
+    microbeam_manipulation_ref: List[MicrobeamManipulationRef] = Field(
         default_factory=list
     )
     name: Optional[str] = None
     objective_settings: Optional[ObjectiveSettings] = None
-    roi_ref: List[ROIRef] = field(default_factory=list)
+    roi_ref: List[ROIRef] = Field(default_factory=list)
     stage_label: Optional[StageLabel] = None

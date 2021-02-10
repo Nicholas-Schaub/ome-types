@@ -1,8 +1,9 @@
-from dataclasses import field
 from enum import Enum
 from typing import List, Optional, cast
 
-from ome_types.dataclasses import AUTO_SEQUENCE, ome_dataclass
+from pydantic import Field
+
+from ome_types._base_type import OMEType
 
 from .annotation_ref import AnnotationRef
 from .detector_settings import DetectorSettings
@@ -66,8 +67,7 @@ class ContrastMethod(Enum):
     POLARIZED_LIGHT = "PolarizedLight"
 
 
-@ome_dataclass
-class Channel:
+class Channel(OMEType):
     """There must be one per channel in the Image, even for a single-plane image.
 
     And information about how each of them was acquired is stored in the various
@@ -87,6 +87,7 @@ class Channel:
 
     Parameters
     ----------
+    id : ChannelID
     acquisition_mode : AcquisitionMode, optional
         AcquisitionMode describes the type of microscopy performed for each
         channel
@@ -114,7 +115,6 @@ class Channel:
     fluor : str, optional
         The Fluor attribute is used for fluorescence images. This is the name
         of the fluorophore used to produce this channel
-    id : ChannelID
     illumination_type : IlluminationType, optional
         The method of illumination used to capture the channel.
     light_path : LightPath, optional
@@ -147,8 +147,9 @@ class Channel:
         DetectorSettings
     """
 
+    id: ChannelID
     acquisition_mode: Optional[AcquisitionMode] = None
-    annotation_ref: List[AnnotationRef] = field(default_factory=list)
+    annotation_ref: List[AnnotationRef] = Field(default_factory=list)
     color: Optional[Color] = cast(Color, -1)
     contrast_method: Optional[ContrastMethod] = None
     detector_settings: Optional[DetectorSettings] = None
@@ -158,7 +159,6 @@ class Channel:
     excitation_wavelength_unit: Optional[UnitsLength] = UnitsLength("nm")
     filter_set_ref: Optional[FilterSetRef] = None
     fluor: Optional[str] = None
-    id: ChannelID = AUTO_SEQUENCE  # type: ignore
     illumination_type: Optional[IlluminationType] = None
     light_path: Optional[LightPath] = None
     light_source_settings: Optional[LightSourceSettings] = None

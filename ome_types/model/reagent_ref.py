@@ -1,11 +1,10 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .reference import Reference
 from .simple_types import ReagentID
 
 
-@ome_dataclass
-class ReagentRef(Reference):
+class ReagentRef(Reference, OMEType):
     """ReagentRef.
 
     Parameters
@@ -13,4 +12,4 @@ class ReagentRef(Reference):
     id : ReagentID
     """
 
-    id: ReagentID = EMPTY  # type: ignore
+    id: ReagentID

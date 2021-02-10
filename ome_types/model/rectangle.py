@@ -1,10 +1,9 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .shape import Shape
 
 
-@ome_dataclass
-class Rectangle(Shape):
+class Rectangle(Shape, OMEType):
     """A simple rectangle object.
 
     If rotation is required apply a transformation at the Shape level.
@@ -13,6 +12,7 @@ class Rectangle(Shape):
     ----------
     height : float
         The height of the rectangle.
+    id : ShapeID
     width : float
         The width of the rectangle.
     x : float
@@ -32,7 +32,6 @@ class Rectangle(Shape):
     font_size_unit : UnitsLength, optional
         The units used for the font size.
     font_style : FontStyle, optional
-    id : ShapeID
     locked : bool, optional
         Controls whether the shape is locked and read only, true is locked,
         false is editable.
@@ -63,7 +62,7 @@ class Rectangle(Shape):
         be included.
     """
 
-    height: float = EMPTY  # type: ignore
-    width: float = EMPTY  # type: ignore
-    x: float = EMPTY  # type: ignore
-    y: float = EMPTY  # type: ignore
+    height: float
+    width: float
+    x: float
+    y: float

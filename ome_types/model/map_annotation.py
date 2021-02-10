@@ -1,17 +1,17 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .annotation import Annotation
 from .map import Map
 
 
-@ome_dataclass
-class MapAnnotation(Annotation):
+class MapAnnotation(Annotation, OMEType):
     """An map annotation.
 
     The contents of this is a list of key/value pairs.
 
     Parameters
     ----------
+    id : AnnotationID
     value : Map
     annotation_ref : AnnotationRef, optional
     annotator : ExperimenterID, optional
@@ -20,11 +20,10 @@ class MapAnnotation(Annotation):
         the Annotator.
     description : str, optional
         A description for the annotation.
-    id : AnnotationID
     namespace : str, optional
         We recommend the inclusion of a namespace for annotations you define.
         If it is absent then we assume the annotation is to use our (OME's)
         default interpretation for this type.
     """
 
-    value: Map = EMPTY  # type: ignore
+    value: Map

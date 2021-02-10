@@ -1,12 +1,11 @@
 from typing import Optional
 
-from ome_types.dataclasses import ome_dataclass
+from ome_types._base_type import OMEType
 
 from .simple_types import UnitsLength
 
 
-@ome_dataclass
-class StageLabel:
+class StageLabel(OMEType):
     """The StageLabel is used to specify a name and position for a stage position in
     the microscope's reference frame.
 

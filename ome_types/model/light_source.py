@@ -1,15 +1,15 @@
-from dataclasses import field
 from typing import List, Optional
 
-from ome_types.dataclasses import AUTO_SEQUENCE, ome_dataclass
+from pydantic import Field
+
+from ome_types._base_type import OMEType
 
 from .annotation_ref import AnnotationRef
 from .manufacturer_spec import ManufacturerSpec
 from .simple_types import LightSourceID, UnitsPower
 
 
-@ome_dataclass
-class LightSource(ManufacturerSpec):
+class LightSource(ManufacturerSpec, OMEType):
     """The lightsource for the instrument.
 
     An instrument may have several light sources. The type of lightsource is
@@ -20,11 +20,11 @@ class LightSource(ManufacturerSpec):
 
     Parameters
     ----------
-    annotation_ref : AnnotationRef, optional
     id : LightSourceID
         A LightSource ID must be specified for each light source, and the
         individual light sources can be referred to by their LightSource IDs
         (eg from Channel).
+    annotation_ref : AnnotationRef, optional
     lot_number : str, optional
         The lot number of the component.
     manufacturer : str, optional
@@ -39,7 +39,7 @@ class LightSource(ManufacturerSpec):
         The serial number of the component.
     """
 
-    annotation_ref: List[AnnotationRef] = field(default_factory=list)
-    id: LightSourceID = AUTO_SEQUENCE  # type: ignore
+    id: LightSourceID
+    annotation_ref: List[AnnotationRef] = Field(default_factory=list)
     power: Optional[float] = None
     power_unit: Optional[UnitsPower] = UnitsPower("mW")

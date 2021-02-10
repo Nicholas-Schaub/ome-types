@@ -1,8 +1,9 @@
-from dataclasses import field
 from enum import Enum
 from typing import List, Optional
 
-from ome_types.dataclasses import AUTO_SEQUENCE, ome_dataclass
+from pydantic import Field
+
+from ome_types._base_type import OMEType
 
 from .annotation_ref import AnnotationRef
 from .manufacturer_spec import ManufacturerSpec
@@ -31,8 +32,7 @@ class Type(Enum):
     SPECTROSCOPY = "Spectroscopy"
 
 
-@ome_dataclass
-class Detector(ManufacturerSpec):
+class Detector(ManufacturerSpec, OMEType):
     """The type of detector used to capture the image.
 
     The Detector ID can be used as a reference within the Channel element in the
@@ -45,6 +45,7 @@ class Detector(ManufacturerSpec):
 
     Parameters
     ----------
+    id : DetectorID
     amplification_gain : float, optional
         Gain applied to the detector signal. This is the electronic gain (as
         apposed to the inherent gain) that is set for the detector.
@@ -52,7 +53,6 @@ class Detector(ManufacturerSpec):
     annotation_ref : AnnotationRef, optional
     gain : float, optional
         The Detector Gain for this detector, as a float. {used:CCD,EMCCD,PMT}
-    id : DetectorID
     lot_number : str, optional
         The lot number of the component.
     manufacturer : str, optional
@@ -74,10 +74,10 @@ class Detector(ManufacturerSpec):
         The fixed Zoom for a detector. {used:PMT}
     """
 
+    id: DetectorID
     amplification_gain: Optional[float] = None
-    annotation_ref: List[AnnotationRef] = field(default_factory=list)
+    annotation_ref: List[AnnotationRef] = Field(default_factory=list)
     gain: Optional[float] = None
-    id: DetectorID = AUTO_SEQUENCE  # type: ignore
     offset: Optional[float] = None
     type: Optional[Type] = None
     voltage: Optional[float] = None

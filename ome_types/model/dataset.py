@@ -1,7 +1,8 @@
-from dataclasses import field
 from typing import List, Optional
 
-from ome_types.dataclasses import AUTO_SEQUENCE, ome_dataclass
+from pydantic import Field
+
+from ome_types._base_type import OMEType
 
 from .annotation_ref import AnnotationRef
 from .experimenter_group_ref import ExperimenterGroupRef
@@ -10,8 +11,7 @@ from .image_ref import ImageRef
 from .simple_types import DatasetID
 
 
-@ome_dataclass
-class Dataset:
+class Dataset(OMEType):
     """An element specifying a collection of images that are always processed
     together.
 
@@ -26,21 +26,21 @@ class Dataset:
 
     Parameters
     ----------
+    id : DatasetID
     annotation_ref : AnnotationRef, optional
     description : str, optional
         A description for the dataset.
     experimenter_group_ref : ExperimenterGroupRef, optional
     experimenter_ref : ExperimenterRef, optional
-    id : DatasetID
     image_ref : ImageRef, optional
     name : str, optional
         A name for the dataset that is suitable for presentation to the user.
     """
 
-    annotation_ref: List[AnnotationRef] = field(default_factory=list)
+    id: DatasetID
+    annotation_ref: List[AnnotationRef] = Field(default_factory=list)
     description: Optional[str] = None
     experimenter_group_ref: Optional[ExperimenterGroupRef] = None
     experimenter_ref: Optional[ExperimenterRef] = None
-    id: DatasetID = AUTO_SEQUENCE  # type: ignore
-    image_ref: List[ImageRef] = field(default_factory=list)
+    image_ref: List[ImageRef] = Field(default_factory=list)
     name: Optional[str] = None

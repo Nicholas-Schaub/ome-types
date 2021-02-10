@@ -1,14 +1,13 @@
 from typing import Optional
 
-from ome_types.dataclasses import ome_dataclass
+from ome_types._base_type import OMEType
 
 from .bin_data import BinData
 from .external import External
 from .simple_types import NonNegativeLong
 
 
-@ome_dataclass
-class BinaryFile:
+class BinaryFile(OMEType):
     """Describes a binary file.
 
     Parameters

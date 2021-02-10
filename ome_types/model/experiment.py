@@ -1,8 +1,9 @@
-from dataclasses import field
 from enum import Enum
 from typing import List, Optional
 
-from ome_types.dataclasses import AUTO_SEQUENCE, ome_dataclass
+from pydantic import Field
+
+from ome_types._base_type import OMEType
 
 from .experimenter_ref import ExperimenterRef
 from .microbeam_manipulation import MicrobeamManipulation
@@ -31,8 +32,7 @@ class Type(Enum):
     TIME_LAPSE = "TimeLapse"
 
 
-@ome_dataclass
-class Experiment:
+class Experiment(OMEType):
     """This element describes the type of experiment.
 
     The required Type attribute must contain one or more entries from the
@@ -45,18 +45,18 @@ class Experiment:
 
     Parameters
     ----------
+    id : ExperimentID
     description : str, optional
         A description for the experiment.
     experimenter_ref : ExperimenterRef, optional
         This is a link to the Experimenter who conducted the experiment
-    id : ExperimentID
     microbeam_manipulations : MicrobeamManipulation, optional
     type : Type, optional
         A term to describe the type of experiment.
     """
 
+    id: ExperimentID
     description: Optional[str] = None
     experimenter_ref: Optional[ExperimenterRef] = None
-    id: ExperimentID = AUTO_SEQUENCE  # type: ignore
-    microbeam_manipulations: List[MicrobeamManipulation] = field(default_factory=list)
-    type: List[Type] = field(default_factory=list)
+    microbeam_manipulations: List[MicrobeamManipulation] = Field(default_factory=list)
+    type: List[Type] = Field(default_factory=list)

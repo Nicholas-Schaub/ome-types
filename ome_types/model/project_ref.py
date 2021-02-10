@@ -1,11 +1,10 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .reference import Reference
 from .simple_types import ProjectID
 
 
-@ome_dataclass
-class ProjectRef(Reference):
+class ProjectRef(Reference, OMEType):
     """There may be one or more of these in a Dataset.
 
     This empty element has a required Project ID attribute that refers to Projects
@@ -16,4 +15,4 @@ class ProjectRef(Reference):
     id : ProjectID
     """
 
-    id: ProjectID = EMPTY  # type: ignore
+    id: ProjectID

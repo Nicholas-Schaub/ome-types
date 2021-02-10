@@ -1,8 +1,9 @@
-from dataclasses import field
 from enum import Enum
 from typing import List, Optional
 
-from ome_types.dataclasses import AUTO_SEQUENCE, ome_dataclass
+from pydantic import Field
+
+from ome_types._base_type import OMEType
 
 from .annotation_ref import AnnotationRef
 from .manufacturer_spec import ManufacturerSpec
@@ -21,8 +22,7 @@ class Type(Enum):
     TUNEABLE = "Tuneable"
 
 
-@ome_dataclass
-class Filter(ManufacturerSpec):
+class Filter(ManufacturerSpec, OMEType):
     """A filter is either an excitation or emission filters.
 
     There should be one filter element specified per wavelength in the image. The
@@ -35,12 +35,12 @@ class Filter(ManufacturerSpec):
 
     Parameters
     ----------
+    id : FilterID
     annotation_ref : AnnotationRef, optional
     filter_wheel : str, optional
         A filter 'wheel' in OME can refer to any arrangement of filters in a
         filter holder of any shape. It could, for example, be a filter slider.
         [plain text string]
-    id : FilterID
     lot_number : str, optional
         The lot number of the component.
     manufacturer : str, optional
@@ -53,8 +53,8 @@ class Filter(ManufacturerSpec):
     type : Type, optional
     """
 
-    annotation_ref: List[AnnotationRef] = field(default_factory=list)
+    id: FilterID
+    annotation_ref: List[AnnotationRef] = Field(default_factory=list)
     filter_wheel: Optional[str] = None
-    id: FilterID = AUTO_SEQUENCE  # type: ignore
     transmittance_range: Optional[TransmittanceRange] = None
     type: Optional[Type] = None

@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Optional
 
-from ome_types.dataclasses import ome_dataclass
+from ome_types._base_type import OMEType
 
 from .manufacturer_spec import ManufacturerSpec
 
@@ -14,8 +14,7 @@ class Type(Enum):
     UPRIGHT = "Upright"
 
 
-@ome_dataclass
-class Microscope(ManufacturerSpec):
+class Microscope(ManufacturerSpec, OMEType):
     """The microscope's manufacturer specification.
 
     Parameters

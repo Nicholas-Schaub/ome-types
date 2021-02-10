@@ -1,13 +1,12 @@
 from typing import Optional
 
-from ome_types.dataclasses import ome_dataclass
+from ome_types._base_type import OMEType
 
 from .map import Map
 from .simple_types import PercentFraction, UnitsPressure, UnitsTemperature
 
 
-@ome_dataclass
-class ImagingEnvironment:
+class ImagingEnvironment(OMEType):
     """This describes the environment that the biological sample was in during the
     experiment.
 

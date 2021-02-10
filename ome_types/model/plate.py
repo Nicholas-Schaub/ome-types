@@ -1,7 +1,8 @@
-from dataclasses import field
 from typing import List, Optional
 
-from ome_types.dataclasses import AUTO_SEQUENCE, ome_dataclass
+from pydantic import Field
+
+from ome_types._base_type import OMEType
 
 from .annotation_ref import AnnotationRef
 from .plate_acquisition import PlateAcquisition
@@ -15,8 +16,7 @@ from .simple_types import (
 from .well import Well
 
 
-@ome_dataclass
-class Plate:
+class Plate(OMEType):
     """This element identifies microtiter plates within a screen.
 
     A plate can belong to more than one screen. The Screen(s) that a plate belongs
@@ -26,6 +26,7 @@ class Plate:
 
     Parameters
     ----------
+    id : PlateID
     annotation_ref : AnnotationRef, optional
     column_naming_convention : NamingConvention, optional
         The ColumnNamingConvention
@@ -38,7 +39,6 @@ class Plate:
         external database.
     field_index : NonNegativeInt, optional
         The index of the WellSample to display as the default Field
-    id : PlateID
     name : str, optional
         The Name identifies the plate to the user. It is used much like the
         ID, and so must be unique within the document.  If a plate name is not
@@ -77,15 +77,15 @@ class Plate:
     wells : Well, optional
     """
 
-    annotation_ref: List[AnnotationRef] = field(default_factory=list)
+    id: PlateID
+    annotation_ref: List[AnnotationRef] = Field(default_factory=list)
     column_naming_convention: Optional[NamingConvention] = None
     columns: Optional[PositiveInt] = None
     description: Optional[str] = None
     external_identifier: Optional[str] = None
     field_index: Optional[NonNegativeInt] = None
-    id: PlateID = AUTO_SEQUENCE  # type: ignore
     name: Optional[str] = None
-    plate_acquisitions: List[PlateAcquisition] = field(default_factory=list)
+    plate_acquisitions: List[PlateAcquisition] = Field(default_factory=list)
     row_naming_convention: Optional[NamingConvention] = None
     rows: Optional[PositiveInt] = None
     status: Optional[str] = None
@@ -93,4 +93,4 @@ class Plate:
     well_origin_x_unit: Optional[UnitsLength] = UnitsLength("reference frame")
     well_origin_y: Optional[float] = None
     well_origin_y_unit: Optional[UnitsLength] = UnitsLength("reference frame")
-    wells: List[Well] = field(default_factory=list)
+    wells: List[Well] = Field(default_factory=list)

@@ -1,11 +1,10 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .bin_data import BinData
 from .shape import Shape
 
 
-@ome_dataclass
-class Mask(Shape):
+class Mask(Shape, OMEType):
     """The Mask ROI shape is a link to a BinData object that is a BIT mask drawn on
     top of the image as an ROI.
 
@@ -17,6 +16,7 @@ class Mask(Shape):
     bin_data : BinData
     height : float
         The height of the mask.
+    id : ShapeID
     width : float
         The width of the mask.
     x : float
@@ -36,7 +36,6 @@ class Mask(Shape):
     font_size_unit : UnitsLength, optional
         The units used for the font size.
     font_style : FontStyle, optional
-    id : ShapeID
     locked : bool, optional
         Controls whether the shape is locked and read only, true is locked,
         false is editable.
@@ -67,8 +66,8 @@ class Mask(Shape):
         be included.
     """
 
-    bin_data: BinData = EMPTY  # type: ignore
-    height: float = EMPTY  # type: ignore
-    width: float = EMPTY  # type: ignore
-    x: float = EMPTY  # type: ignore
-    y: float = EMPTY  # type: ignore
+    bin_data: BinData
+    height: float
+    width: float
+    x: float
+    y: float

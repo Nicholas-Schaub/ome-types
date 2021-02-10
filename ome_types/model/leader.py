@@ -1,11 +1,10 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .reference import Reference
 from .simple_types import ExperimenterID
 
 
-@ome_dataclass
-class Leader(Reference):
+class Leader(Reference, OMEType):
     """Contact information for a ExperimenterGroup leader specified using a reference
     to an Experimenter element defined elsewhere in the document.
 
@@ -14,4 +13,4 @@ class Leader(Reference):
     id : ExperimenterID
     """
 
-    id: ExperimenterID = EMPTY  # type: ignore
+    id: ExperimenterID

@@ -1,14 +1,14 @@
-from dataclasses import field
 from typing import List, Optional
 
-from ome_types.dataclasses import AUTO_SEQUENCE, ome_dataclass
+from pydantic import Field
+
+from ome_types._base_type import OMEType
 
 from .annotation_ref import AnnotationRef
 from .simple_types import ExperimenterID
 
 
-@ome_dataclass
-class Experimenter:
+class Experimenter(OMEType):
     """This element describes a person who performed an imaging experiment.
 
     This person may also be a user of the OME system, in which case the UserName
@@ -17,13 +17,13 @@ class Experimenter:
 
     Parameters
     ----------
+    id : ExperimenterID
     annotation_ref : AnnotationRef, optional
     email : str, optional
         A person's email address.
     first_name : str, optional
         First name, sometime called christian name or given name or forename.
         [plain text string]
-    id : ExperimenterID
     institution : str, optional
         A person's Institution The organizing structure that people belong to
         other than groups.  A university, or company, etc. We do not specify a
@@ -41,10 +41,10 @@ class Experimenter:
         sense).
     """
 
-    annotation_ref: List[AnnotationRef] = field(default_factory=list)
+    id: ExperimenterID
+    annotation_ref: List[AnnotationRef] = Field(default_factory=list)
     email: Optional[str] = None
     first_name: Optional[str] = None
-    id: ExperimenterID = AUTO_SEQUENCE  # type: ignore
     institution: Optional[str] = None
     last_name: Optional[str] = None
     middle_name: Optional[str] = None

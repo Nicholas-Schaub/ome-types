@@ -1,11 +1,11 @@
-from dataclasses import field
 from typing import List
 
-from ome_types.dataclasses import ome_dataclass
+from pydantic import Field
+
+from ome_types._base_type import OMEType
 
 
-@ome_dataclass
-class M:
+class M(OMEType):
     """This is a key/value pair used to build up a Mapping.
 
     The          Element and Attribute name are kept to single letters to minimize
@@ -21,8 +21,7 @@ class M:
     k: str
 
 
-@ome_dataclass
-class Map:
+class Map(OMEType):
     """This is a Mapping of key/value pairs.
 
     Parameters
@@ -35,4 +34,4 @@ class Map:
         times.
     """
 
-    m: List[M] = field(default_factory=list)
+    m: List[M] = Field(default_factory=list)

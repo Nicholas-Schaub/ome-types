@@ -1,10 +1,9 @@
-from ome_types.dataclasses import ome_dataclass
+from ome_types._base_type import OMEType
 
 from .light_source import LightSource
 
 
-@ome_dataclass
-class LightEmittingDiode(LightSource):
+class LightEmittingDiode(LightSource, OMEType):
     """The LightEmittingDiode element is used to describe various kinds of LED lamps.
 
     As the LightEmittingDiode is inside a LightSource it already has available the
@@ -32,11 +31,11 @@ class LightEmittingDiode(LightSource):
 
     Parameters
     ----------
-    annotation_ref : AnnotationRef, optional
     id : LightSourceID
         A LightSource ID must be specified for each light source, and the
         individual light sources can be referred to by their LightSource IDs
         (eg from Channel).
+    annotation_ref : AnnotationRef, optional
     lot_number : str, optional
         The lot number of the component.
     manufacturer : str, optional

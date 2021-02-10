@@ -1,14 +1,14 @@
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .shape import Shape
 
 
-@ome_dataclass
-class Point(Shape):
+class Point(Shape, OMEType):
     """Point.
 
     Parameters
     ----------
+    id : ShapeID
     x : float
         The X coordinate of the point.
     y : float
@@ -26,7 +26,6 @@ class Point(Shape):
     font_size_unit : UnitsLength, optional
         The units used for the font size.
     font_style : FontStyle, optional
-    id : ShapeID
     locked : bool, optional
         Controls whether the shape is locked and read only, true is locked,
         false is editable.
@@ -57,5 +56,5 @@ class Point(Shape):
         be included.
     """
 
-    x: float = EMPTY  # type: ignore
-    y: float = EMPTY  # type: ignore
+    x: float
+    y: float

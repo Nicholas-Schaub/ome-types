@@ -1,17 +1,17 @@
 from typing import Optional
 
-from ome_types.dataclasses import EMPTY, ome_dataclass
+from ome_types._base_type import OMEType
 
 from .shape import Shape
 from .simple_types import Marker
 
 
-@ome_dataclass
-class Line(Shape):
+class Line(Shape, OMEType):
     """A straight line defined by it's end points.
 
     Parameters
     ----------
+    id : ShapeID
     x1 : float
         The X coordinate of the start of the line.
     x2 : float
@@ -33,7 +33,6 @@ class Line(Shape):
     font_size_unit : UnitsLength, optional
         The units used for the font size.
     font_style : FontStyle, optional
-    id : ShapeID
     locked : bool, optional
         Controls whether the shape is locked and read only, true is locked,
         false is editable.
@@ -66,9 +65,9 @@ class Line(Shape):
         be included.
     """
 
-    x1: float = EMPTY  # type: ignore
-    x2: float = EMPTY  # type: ignore
-    y1: float = EMPTY  # type: ignore
-    y2: float = EMPTY  # type: ignore
+    x1: float
+    x2: float
+    y1: float
+    y2: float
     marker_end: Optional[Marker] = None
     marker_start: Optional[Marker] = None
