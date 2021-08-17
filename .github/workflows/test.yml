@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - "master"
+      - "model"
   pull_request:
     branches:
       - "master"
+      - "model"
 
 jobs:
   test:

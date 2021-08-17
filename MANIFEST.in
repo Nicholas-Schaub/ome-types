@@ -1,5 +1,5 @@
 include LICENSE README.md setup.py pyproject.toml
-include src/ome_types/py.typed
-recursive-include src *.xsd
+include ome_types/py.typed
+recursive-include ome_types *.xsd
 recursive-exclude testing *
 recursive-exclude docs *
