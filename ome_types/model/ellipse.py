@@ -1,3 +1,5 @@
+from typing_extensions import Literal
+
 from ome_types._base_type import OMEType
 
 from .shape import Shape
@@ -62,6 +64,7 @@ class Ellipse(Shape, OMEType):
         be included.
     """
 
+    kind: Literal["ellipse"] = "ellipse"
     radius_x: float
     radius_y: float
     x: float

@@ -1,5 +1,7 @@
 from typing import Optional
 
+from typing_extensions import Literal
+
 from ome_types._base_type import OMEType
 
 from .shape import Shape
@@ -65,6 +67,7 @@ class Line(Shape, OMEType):
         be included.
     """
 
+    kind: Literal["line"] = "line"
     x1: float
     x2: float
     y1: float

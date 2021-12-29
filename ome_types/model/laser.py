@@ -1,6 +1,8 @@
 from enum import Enum
 from typing import Optional
 
+from typing_extensions import Literal
+
 from ome_types._base_type import OMEType
 
 from .light_source import LightSource
@@ -123,6 +125,7 @@ class Laser(LightSource, OMEType):
         The units of the Wavelength - default:nanometres.
     """
 
+    kind: Literal["laser"] = "laser"
     frequency_multiplication: Optional[PositiveInt] = None
     laser_medium: Optional[LaserMedium] = None
     pockel_cell: Optional[bool] = None

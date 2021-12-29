@@ -1,3 +1,5 @@
+from typing_extensions import Literal
+
 from ome_types._base_type import OMEType
 
 from .shape import Shape
@@ -56,5 +58,6 @@ class Point(Shape, OMEType):
         be included.
     """
 
+    kind: Literal["point"] = "point"
     x: float
     y: float

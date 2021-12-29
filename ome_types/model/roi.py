@@ -1,31 +1,12 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, Iterator, List, Optional, Sequence
 
 from pydantic import Field, validator
 
 from ome_types._base_type import OMEType
 
 from .annotation_ref import AnnotationRef
-from .ellipse import Ellipse
-from .label import Label
-from .line import Line
-from .mask import Mask
-from .point import Point
-from .polygon import Polygon
-from .polyline import Polyline
-from .rectangle import Rectangle
-from .shape import Shape
+from .shape_group import ShapeGroupType
 from .simple_types import ROIID
-
-_shape_types: Dict[str, type] = {
-    "point": Point,
-    "line": Line,
-    "rectangle": Rectangle,
-    "ellipse": Ellipse,
-    "polyline": Polyline,
-    "polygon": Polygon,
-    "mask": Mask,
-    "label": Label,
-}
 
 
 class ROI(OMEType):
@@ -42,28 +23,30 @@ class ROI(OMEType):
         A description for the ROI.
     name : str, optional
         The Name identifies the ROI to the user.
-    union : List[Shape], optional
+    union : List[ShapeGroupType], optional
     """
 
     id: ROIID
     annotation_ref: List[AnnotationRef] = Field(default_factory=list)
     description: Optional[str] = None
     name: Optional[str] = None
-    union: List[Shape] = Field(default_factory=list)
+    union: List[ShapeGroupType] = Field(default_factory=list)
 
-    @validator("union", pre=True, each_item=True)
-    def validate_union(cls, value: Union[Shape, Dict[Any, Any]]) -> Shape:
-        if isinstance(value, Shape):
-            return value
-        elif isinstance(value, dict):
-            try:
-                _type = value.pop("_type")
-            except KeyError:
-                raise ValueError("dict initialization requires _type") from None
-            try:
-                shape_cls = _shape_types[_type]
-            except KeyError:
-                raise ValueError(f"unknown Shape type '{_type}'") from None
-            return shape_cls(**value)
-        else:
-            raise ValueError("invalid type for union values")
+    @validator("union", pre=True)
+    def _validate_union(cls, value: Any) -> Sequence[Dict[str, Any]]:
+        if isinstance(value, dict):
+            return list(cls._flatten_union_dict(value))
+        if not isinstance(value, Sequence):
+            raise TypeError("must be dict or sequence of dicts")
+        return value
+
+    @classmethod
+    def _flatten_union_dict(
+        cls, nested: Dict[str, Any], keyname: str = "kind"
+    ) -> Iterator[Dict[str, Any]]:
+        for key, value in nested.items():
+            keydict = {keyname: key} if keyname else {}
+            if isinstance(value, list):
+                yield from ({**x, **keydict} for x in value)
+            else:
+                yield {**value, **keydict}

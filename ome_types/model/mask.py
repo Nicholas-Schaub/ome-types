@@ -1,3 +1,5 @@
+from typing_extensions import Literal
+
 from ome_types._base_type import OMEType
 
 from .bin_data import BinData
@@ -66,6 +68,7 @@ class Mask(Shape, OMEType):
         be included.
     """
 
+    kind: Literal["mask"] = "mask"
     bin_data: BinData
     height: float
     width: float

@@ -1,6 +1,7 @@
 import re
 from enum import Enum
 
+from pydantic import color
 from pydantic.types import ConstrainedFloat, ConstrainedInt, ConstrainedStr
 
 
@@ -21,8 +22,30 @@ class Binning(Enum):
     TWOBYTWO = "2x2"
 
 
-class Color(ConstrainedInt):
-    pass
+class Color(color.Color):
+    def __init__(self, val: color.ColorType) -> None:
+        if isinstance(val, int):
+            val = self._int2tuple(val)
+        super().__init__(val)
+
+    @classmethod
+    def _int2tuple(cls, val: int):
+        return (val >> 24 & 255, val >> 16 & 255, val >> 8 & 255, (val & 255) / 255)
+
+    def as_int32(self) -> int:
+        r, g, b, *a = self.as_rgb_tuple()
+        v = r << 24 | g << 16 | b << 8 | int((a[0] if a else 1) * 255)
+        if v < 2 ** 32 // 2:
+            return v
+        return v - 2 ** 32
+
+    def __eq__(self, o: object) -> bool:
+        if isinstance(o, Color):
+            return self.as_int32() == o.as_int32()
+        return False
+
+    def __int__(self) -> int:
+        return self.as_int32()
 
 
 class FontFamily(Enum):

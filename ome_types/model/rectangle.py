@@ -1,3 +1,5 @@
+from typing_extensions import Literal
+
 from ome_types._base_type import OMEType
 
 from .shape import Shape
@@ -62,6 +64,7 @@ class Rectangle(Shape, OMEType):
         be included.
     """
 
+    kind: Literal["rectangle"] = "rectangle"
     height: float
     width: float
     x: float

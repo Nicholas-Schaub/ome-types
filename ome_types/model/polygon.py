@@ -1,3 +1,5 @@
+from typing_extensions import Literal
+
 from ome_types._base_type import OMEType
 
 from .shape import Shape
@@ -59,4 +61,5 @@ class Polygon(Shape, OMEType):
         be included.
     """
 
+    kind: Literal["polygon"] = "polygon"
     points: str

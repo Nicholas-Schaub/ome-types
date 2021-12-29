@@ -8,9 +8,8 @@ from typing import Any, Dict, Optional, Union
 from xml.etree import ElementTree
 
 import xmlschema
-from elementpath.datatypes import DateTime10
-from xmlschema import XMLSchemaParseError
-from xmlschema.converters import ElementData, XMLSchemaConverter
+from xmlschema import ElementData, XMLSchemaParseError
+from xmlschema.converters import XMLSchemaConverter
 from xmlschema.documents import XMLSchemaValueError
 
 from ome_types._base_type import OMEType
@@ -23,6 +22,7 @@ from .model import (
     _plural_to_singular,
     _singular_to_plural,
     _snake_to_camel,
+    simple_types,
 )
 
 URI_OME = "http://www.openmicroscopy.org/Schemas/OME/2016-06"
@@ -111,44 +111,6 @@ class OMEConverter(XMLSchemaConverter):
         elif xsd_element.local_name == "BinData":
             if result["length"] == 0 and "value" not in result:
                 result["value"] = ""
-        elif xsd_element.local_name == "Instrument":
-            light_sources = []
-            for _type in (
-                "laser",
-                "arc",
-                "filament",
-                "light_emitting_diode",
-                "generic_excitation_source",
-            ):
-                if _type in result:
-                    values = result.pop(_type)
-                    if isinstance(values, dict):
-                        values = [values]
-                    for v in values:
-                        v["_type"] = _type
-                    light_sources.extend(values)
-            if light_sources:
-                result["light_source_group"] = light_sources
-        elif xsd_element.local_name == "Union":
-            shapes = []
-            for _type in (
-                "point",
-                "line",
-                "rectangle",
-                "ellipse",
-                "polyline",
-                "polygon",
-                "mask",
-                "label",
-            ):
-                if _type in result:
-                    values = result.pop(_type)
-                    if isinstance(values, dict):
-                        values = [values]
-                    for v in values:
-                        v["_type"] = _type
-                    shapes.extend(values)
-            result = shapes
         elif xsd_element.local_name == "StructuredAnnotations":
             annotations = []
             for _type in (
@@ -188,7 +150,9 @@ class OMEConverter(XMLSchemaConverter):
         tag = xsd_element.qualified_name
         if not isinstance(obj, OMEType):
             if isinstance(obj, datetime):
-                return ElementData(tag, DateTime10.fromdatetime(obj), None, {})
+                return ElementData(
+                    tag, obj.isoformat().replace("+00:00", "Z"), None, {}
+                )
             elif isinstance(obj, ElementTree.Element):
                 # ElementData can't represent mixed content, so we'll leave this
                 # element empty and fix it up after encoding is complete.
@@ -228,10 +192,10 @@ class OMEConverter(XMLSchemaConverter):
                 field.default_factory() if field.default_factory else field.default
             )
             value = getattr(obj, name)
-            if value == default:
+            if value == default or name == "metadata_only" and not value:
                 continue
-            elif name == "metadata_only" and not value:
-                continue
+            if isinstance(value, simple_types.Color):
+                value = value.as_int32()
             name = _plural_to_singular.get(name, name)
             name = _snake_to_camel.get(name, name)
             if name in xsd_element.attributes:
@@ -240,7 +204,7 @@ class OMEConverter(XMLSchemaConverter):
                 elif isinstance(value, Enum):
                     value = value.value
                 elif isinstance(value, datetime):
-                    value = DateTime10.fromdatetime(value)
+                    value = value.isoformat().replace("+00:00", "Z")
                 attributes[name] = value
             elif name == "Value" and xsd_element.local_name in {"BinData", "UUID", "M"}:
                 text = value

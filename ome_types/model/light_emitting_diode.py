@@ -1,3 +1,5 @@
+from typing_extensions import Literal
+
 from ome_types._base_type import OMEType
 
 from .light_source import LightSource
@@ -49,3 +51,5 @@ class LightEmittingDiode(LightSource, OMEType):
     serial_number : str, optional
         The serial number of the component.
     """
+
+    kind: Literal["light_emitting_diode"] = "light_emitting_diode"

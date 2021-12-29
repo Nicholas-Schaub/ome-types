@@ -1,6 +1,8 @@
 from enum import Enum
 from typing import Optional
 
+from typing_extensions import Literal
+
 from ome_types._base_type import OMEType
 
 from .light_source import LightSource
@@ -43,4 +45,5 @@ class Filament(LightSource, OMEType):
         The type of filament.
     """
 
+    kind: Literal["filament"] = "filament"
     type: Optional[Type] = None

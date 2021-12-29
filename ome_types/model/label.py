@@ -1,3 +1,5 @@
+from typing_extensions import Literal
+
 from ome_types._base_type import OMEType
 
 from .shape import Shape
@@ -60,5 +62,6 @@ class Label(Shape, OMEType):
         be included.
     """
 
+    kind: Literal["label"] = "label"
     x: float
     y: float

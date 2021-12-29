@@ -1,5 +1,7 @@
 from typing import Optional
 
+from typing_extensions import Literal
+
 from ome_types._base_type import OMEType
 
 from .shape import Shape
@@ -64,6 +66,7 @@ class Polyline(Shape, OMEType):
         be included.
     """
 
+    kind: Literal["polyline"] = "polyline"
     points: str
     marker_end: Optional[Marker] = None
     marker_start: Optional[Marker] = None
