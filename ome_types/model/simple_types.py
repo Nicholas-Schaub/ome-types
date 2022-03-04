@@ -35,9 +35,9 @@ class Color(color.Color):
     def as_int32(self) -> int:
         r, g, b, *a = self.as_rgb_tuple()
         v = r << 24 | g << 16 | b << 8 | int((a[0] if a else 1) * 255)
-        if v < 2 ** 32 // 2:
+        if v < 2**32 // 2:
             return v
-        return v - 2 ** 32
+        return v - 2**32
 
     def __eq__(self, o: object) -> bool:
         if isinstance(o, Color):
